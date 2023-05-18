@@ -10,11 +10,20 @@ class FileGuard {
 	public:
 		FileGuard(const std::string_view path) { my_file.open(path.data()); }
 
-		~FileGuard() { my_file.close(); }
+		~FileGuard() { 
+			my_file.close(); 
+			write_file.close();
+		}
 
-		auto data() noexcept -> std::ifstream & { return my_file; }
+		std::ifstream&  data() noexcept { 
+			return my_file; 
+		}
 
-		auto read_file() noexcept -> std::string {
+		std::ofstream& write() noexcept { 
+			return write_file; 
+		}
+
+		std::string read_file() noexcept {
 
 			std::string fileBuffer;
 			std::string line;
@@ -36,10 +45,11 @@ class FileGuard {
 
 	private:
 		std::ifstream my_file;
+		std::ofstream write_file;
 };
 
 
-auto read_to_string(std::string filename) -> std::optional<std::string> {
+std::optional<std::string> read_to_string(std::string filename) {
   FileGuard file(filename.data());
 
   if (!file.data()) {
@@ -50,7 +60,7 @@ auto read_to_string(std::string filename) -> std::optional<std::string> {
 }
 
 
-auto parse_csv(std::string path) -> csv {
+csv parse_csv(std::string path) {
 	FileGuard file(path.data());
 
   if (!file.data()) {
@@ -72,7 +82,17 @@ auto parse_csv(std::string path) -> csv {
 
 
 	return data;
-
-
 }
 
+int save_csv(std::string path, csv data) {
+	std::ofstream info(path);
+
+	for (const auto &[key, value] : data) {
+		info << key << "," << value << std::endl;
+	}
+
+	info.close();
+
+	return 0;
+}
+ 

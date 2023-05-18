@@ -1,7 +1,6 @@
-#include "file.cpp"
-#include "args.cpp"
+#include "parse/args.hpp"
 
-auto main(int argc, char* argv[]) -> int {
+int main(int argc, char* argv[]) {
 
 	parse_args(argc, argv);
 
