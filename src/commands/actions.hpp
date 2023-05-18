@@ -1,10 +1,9 @@
 #include <iostream>
 #include <optional>
 
-int setKey(std::string key, std::string value);
+int setKey(const std::string& key, const std::string& value);
 
-int deleteKey(const std::string key);
-
+int deleteKey(const std::string& key);
 
 enum color {
 	black,
@@ -21,14 +20,14 @@ enum color {
 
 std::string getColor(color color);
 
-int show_help(); 
+int showHelp(); 
 
 int showValues();
 
 std::string getTasksPath(); 
 
-std::optional<std::string> getFilePath(std::string file); 
+std::optional<std::string> getFilePath(const std::string& file); 
 
-int runFile(std::string path); 
+int runFile(const std::string& path); 
 
 

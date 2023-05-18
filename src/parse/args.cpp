@@ -18,7 +18,7 @@ enum Action {
 * @param arg possible command
 * @return the arg if exists or not
 */
-std::optional<std::string> existCmd(std::string arg) {
+std::optional<std::string> existCmd(const std::string& arg) {
 
 	const char* commands[7] = { "set", "del", "show", "--help", "-h", "run", "help"};
 
@@ -36,7 +36,7 @@ std::optional<std::string> existCmd(std::string arg) {
 * @param cmd command string
 * @return the action
 */
-Action getAction(std::string cmd) {
+Action getAction(const std::string& cmd) {
 
 	if (cmd == "set") {
 		return Action::set;
@@ -184,7 +184,7 @@ int manageAction(Action act, int argc, char *arg[]) {
 	switch(act) {
 
 		case Action::help:
-			show_help();
+			showHelp();
 			break;
 		case Action::set:
 			setCommand(argc, arg);
@@ -209,11 +209,28 @@ int manageAction(Action act, int argc, char *arg[]) {
 	return 0;
 }
 
+int showAscii() {
+	std::cout << "  \\.===./    " << "\n";
+  	std::cout << "  | 0 0 |    " << "\n";
+  	std::cout << "   \\_-_/     " << "\n";
+  	std::cout << "(m9\\:::/\\    " << "\n";
+  	std::cout << "   /___\\6    " << "\n";
+  	std::cout << "   /| |\\    " << "\n";
+  	std::cout << "  [_] [_]\n";
+	std::cout << "Hello, I am Rob your assistant try rob --help";
+	return 0;
+}
+
 /*
 * Parse arguments of cli and call to manager of commands
 * if command was not found should return help cli
 */
 int parseArgs(int num, char *args[]) {
+
+	if (num == 1) {
+		showHelp();
+	}
+
 
 	for(int i = 1; i < num; i++) {
 		auto cmd = existCmd(args[i]);
@@ -223,7 +240,7 @@ int parseArgs(int num, char *args[]) {
 			manageAction(act, num, args);
 			return 0;
 		}
-		show_help();
+		showAscii();
 	}
 
 

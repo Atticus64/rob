@@ -20,9 +20,9 @@ class FileGuard {
 };
 
 
-std::optional<std::string> readToString(std::string filename); 
+std::optional<std::string> readToString(const std::string& filename); 
 
 
-csv parseCsv(std::string path); 
+csv parseCsv(const std::string& path); 
 
-int saveCsv(std::string path, csv data);
+int saveCsv(const std::string& path, csv data);
