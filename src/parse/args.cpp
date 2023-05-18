@@ -9,14 +9,15 @@ enum action {
 	del,
 	help,
 	run,
+	help_cmd,
 	unknown
 };
 
-std::optional<std::string> exist_cmd(std::string arg) {
+std::optional<std::string> existCmd(std::string arg) {
 
-	const char* commands[6] = { "set", "del", "show", "--help", "-h", "run"};
+	const char* commands[7] = { "set", "del", "show", "--help", "-h", "run", "help"};
 
-	for(int i = 0; i < 6; i++){
+	for(int i = 0; i < 7; i++){
 		if (arg == commands[i]) {
 			return arg;
 		}
@@ -25,7 +26,7 @@ std::optional<std::string> exist_cmd(std::string arg) {
 	return std::nullopt; 
 }
 
-action get_action(std::string cmd) {
+action getAction(std::string cmd) {
 
 	if (cmd == "set") {
 		return action::set;
@@ -43,6 +44,10 @@ action get_action(std::string cmd) {
 		return action::help;
 	}
 
+	if (cmd == "help") {
+		return action::help_cmd;
+	}
+
 	if (cmd == "run") {
 		return action::run;
 	}
@@ -52,7 +57,7 @@ action get_action(std::string cmd) {
 
 }
 
-int set_command(int args_number, char *arg[]) {
+int setCommand(int args_number, char *arg[]) {
 
 	if (args_number == 4) {
 		std::string key = arg[2];
@@ -64,7 +69,7 @@ int set_command(int args_number, char *arg[]) {
 	return 0;
 }
 
-int delete_value(int argc, char *argv[]) {
+int delCommand(int argc, char *argv[]) {
 
 	if (argc >= 2) {
 		std::string key = argv[2];
@@ -92,7 +97,7 @@ int show_help() {
 
 int run_command(int argc, char *argv[]) {
 	
-	if (argc >= 2) {
+	if (argc >= 3) {
 		std::string script = argv[2];
 
 		auto file = get_file_path(script);
@@ -107,6 +112,62 @@ int run_command(int argc, char *argv[]) {
 	return 0;
 }
 
+int getHelpMessage(std::string_view command) {
+	
+	if (command == "set") {
+		std::cout << get_color(color::underline) << "Set" <<  get_color(color::reset) << " command" << "\n";
+		std::cout << "\tSet a task" << "\n";
+		std::cout << get_color(color::blue) <<"Usage:" << get_color(color::reset) << "\n";
+		std::cout << "\tset [key] [value]" << "\n";
+		std::cout << get_color(color::yellow) << "Example:" << get_color(color::reset) << "\n";
+		std::cout << "\tset ticket 'Resolve bug in module actions'" << "\n";
+		return 0;
+	}
+
+  if (command == "del") {
+		std::cout << get_color(color::underline) << "Del" <<  get_color(color::reset) << " command" << "\n";
+		std::cout << "\tDelete a task" << "\n";
+		std::cout << get_color(color::blue) <<"Usage:" << get_color(color::reset) << "\n";
+		std::cout << "\tdel [key]" << "\n";
+		std::cout << get_color(color::yellow) << "Example:" << get_color(color::reset) << "\n";
+		std::cout << "\tdel ticket" << "\n";
+		return 0;
+	}
+
+	if (command == "run") {
+		std::cout << get_color(color::underline) << "Run" <<  get_color(color::reset) << "command" << "\n";
+		std::cout << "\tRun a custom script" << "\n";
+		std::cout << get_color(color::blue) <<"Usage:" << get_color(color::reset) << "\n";
+		std::cout << "\trun [name]" << "\n";
+		std::cout << get_color(color::yellow) << "Example:" << get_color(color::reset) << "\n";
+		std::cout << "\trun update" << "\n";
+		std::cout << get_color(color::cyan)  << "Note:" << get_color(color::reset) << " in your folder ~/.config/scripts" << "\n";
+		std::cout << "Must have a file with execution permission"<< "\n";
+		std::cout << "The name is without extension, if file is update.sh the name is update"<< "\n";
+		return 0;
+	}
+
+
+	std::cout << "No help for that command" << "\n";
+	return 0;
+}
+
+int showCmdHelp(int num, char *args[]) {
+
+	if (num >= 3) {
+		std::string cmd = args[2];
+
+		if (existCmd(cmd)) {
+			getHelpMessage(cmd);
+			return 0;
+		}
+	}
+
+	std::cout << "No cmd provided to help";
+
+	return 0;
+}
+
 int manage_action(action act, int argc, char *arg[]) {
 	
 	switch(act) {
@@ -115,16 +176,19 @@ int manage_action(action act, int argc, char *arg[]) {
 			show_help();
 			break;
 		case action::set:
-			set_command(argc, arg);
+			setCommand(argc, arg);
 			break;
 		case action::show: 
 			show_values();
 			break;
 		case action::del:
-			delete_value(argc, arg);
+			delCommand(argc, arg);
 			break;
 		case action::run:
 			run_command(argc, arg);
+			break;
+		case action::help_cmd:
+			showCmdHelp(argc, arg);
 			break;
 		case action::unknown:
 			std::cout << "Unknown action" << "\n";
@@ -137,11 +201,12 @@ int manage_action(action act, int argc, char *arg[]) {
 int parse_args(int num, char *args[]) {
 
 	for(int i = 1; i < num; i++) {
-		auto cmd = exist_cmd(args[i]);
+		auto cmd = existCmd(args[i]);
 		if (cmd) {
-			action act = get_action(cmd.value());
+			action act = getAction(cmd.value());
 
 			manage_action(act, num, args);
+			return 0;
 		}
 		show_help();
 	}

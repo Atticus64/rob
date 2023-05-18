@@ -9,9 +9,9 @@ enum action {
 	help
 };
 
-std::optional<std::string> exist_cmd(std::string arg);
+std::optional<std::string> existCmd(std::string arg);
 
-action get_action(std::string cmd);
+action getAction(std::string cmd);
 
 int manage_action(action act);
 

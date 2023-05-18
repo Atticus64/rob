@@ -13,6 +13,7 @@ enum color {
 	cyan,
 	white,
 	reset,
+	underline
 };
 
 
@@ -36,6 +37,8 @@ std::string get_color(color color) {
 			return "\033[37m";
 		case reset:
 			return "\033[0m";
+		case underline:
+			return "\033[4m";
 	}
 
 	return "";
