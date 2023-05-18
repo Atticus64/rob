@@ -42,11 +42,11 @@ Action getAction(std::string cmd) {
 		return Action::set;
 	}
 
-  if (cmd == "show") {
+	if (cmd == "show") {
 		return Action::show;
 	}
 
-  if (cmd == "del") {
+	if (cmd == "del") {
 		return Action::del;
 	}
 

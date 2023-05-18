@@ -7,8 +7,8 @@
 typedef std::map<std::string, std::string> csv; 
 
 /*
-* File Guardian 
-*/
+ * File Guardian 
+ */
 class FileGuard {
 	public:
 		FileGuard(const std::string_view path) { my_file.open(path.data()); }
@@ -53,13 +53,13 @@ class FileGuard {
 
 
 std::optional<std::string> readToString(std::string filename) {
-  FileGuard file(filename.data());
+	FileGuard file(filename.data());
 
-  if (!file.data()) {
-    return {};
-  }
+	if (!file.data()) {
+		return {};
+	}
 
-  return file.read_file();
+	return file.read_file();
 }
 
 
@@ -71,9 +71,9 @@ std::optional<std::string> readToString(std::string filename) {
 csv parseCsv(std::string path) {
 	FileGuard file(path.data());
 
-  if (!file.data()) {
-    return {};
-  }
+	if (!file.data()) {
+		return {};
+	}
 
 	csv data;
 	std::string line;
