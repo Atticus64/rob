@@ -1,5 +1,7 @@
 
 a.out 
+*.gif
+*.tape
 rob
 obj/
 .vscode

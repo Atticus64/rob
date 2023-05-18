@@ -217,7 +217,7 @@ int showAscii() {
   	std::cout << "   /___\\6    " << "\n";
   	std::cout << "   /| |\\    " << "\n";
   	std::cout << "  [_] [_]\n";
-	std::cout << "Hello, I am Rob your assistant try rob --help";
+	std::cout << "Hello, I am Rob your assistant try rob --help\n";
 	return 0;
 }
 
