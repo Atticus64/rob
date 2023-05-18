@@ -83,6 +83,7 @@ int show_help() {
 	std::cout << "Usage: rob [COMMAND] [ARGS]" << "\n\n";
 	std::cout << "Commands:\n";
 	std::cout << "  set  <key> <value>" << " Set a task value" << "\n";
+	std::cout << "  run  [name]" << "        Run a script of folder ~/.config/scripts" << "\n";
 	std::cout << "  show"      << "\t\t     Show list of tasks" <<  "\n";
 	std::cout << "  del  <key>"   << "\t     Delete a task" << "\n";
 	std::cout << "  --help -h "   << "\t     Show help of rob" << "\n";
@@ -141,12 +142,8 @@ int parse_args(int num, char *args[]) {
 			action act = get_action(cmd.value());
 
 			manage_action(act, num, args);
-			/* if (num >= 4) { */
-				/* std::string key = args[i+1]; */
-				/* std::string value = args[i+2]; */
-
-			/* } */
 		}
+		show_help();
 	}
 
 
