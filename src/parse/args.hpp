@@ -2,7 +2,7 @@
 #include <optional>
 #include <vector>
 
-enum action {
+enum Action {
 	set,
 	show,
 	del,
@@ -11,9 +11,9 @@ enum action {
 
 std::optional<std::string> existCmd(std::string arg);
 
-action getAction(std::string cmd);
+Action getAction(std::string cmd);
 
-int manageAction(action act, int argc, char *arg[]);
+int manageAction(Action act, int argc, char *arg[]);
 
 int runCommand(int argc, char *argv[]);
 

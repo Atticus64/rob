@@ -21,6 +21,8 @@ enum color {
 
 std::string getColor(color color);
 
+int show_help(); 
+
 int showValues();
 
 std::string getTasksPath(); 

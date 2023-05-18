@@ -52,6 +52,20 @@ std::string getTasksPath() {
 	return file_path;
 }
 
+int show_help() {
+	std::cout << "CLI assistant for manage tasks and scripts by Jona 🍪" << "\n";
+	std::cout << "\n";
+	std::cout << "Usage: rob [COMMAND] [ARGS]" << "\n\n";
+	std::cout << "Commands:\n";
+	std::cout << "  set  <key> <value>" << " Set a task value" << "\n";
+	std::cout << "  run  [name]" << "        Run a script of folder ~/.config/scripts" << "\n";
+	std::cout << "  show"      << "\t\t     Show list of tasks" <<  "\n";
+	std::cout << "  del  <key>"   << "\t     Delete a task" << "\n";
+	std::cout << "  --help -h "   << "\t     Show help of rob" << "\n";
+	return 0;
+}
+
+
 std::optional<std::string> getFilePath(std::string file) {
 	std::string home_dir = getenv("HOME");
 	auto path = home_dir + "/.config/scripts";
@@ -69,7 +83,7 @@ std::optional<std::string> getFilePath(std::string file) {
 }
 
 int runFile(std::string path) {
-  system(path.data());
+	system(path.data());
 
 	return 0;
 }

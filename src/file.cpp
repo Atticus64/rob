@@ -6,6 +6,9 @@
 
 typedef std::map<std::string, std::string> csv; 
 
+/*
+* File Guardian 
+*/
 class FileGuard {
 	public:
 		FileGuard(const std::string_view path) { my_file.open(path.data()); }
@@ -60,6 +63,11 @@ std::optional<std::string> readToString(std::string filename) {
 }
 
 
+/*
+* Parses a CSV file and returns a map of the CSV file.
+* @param path fs path of the CSV file
+* @returns csv object map
+*/
 csv parseCsv(std::string path) {
 	FileGuard file(path.data());
 
@@ -84,6 +92,9 @@ csv parseCsv(std::string path) {
 	return data;
 }
 
+/*
+* Save object csv to a file path
+*/
 int saveCsv(std::string path, csv data) {
 	std::ofstream info(path);
 

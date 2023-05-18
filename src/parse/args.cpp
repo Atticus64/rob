@@ -3,7 +3,7 @@
 #include <optional>
 #include <vector>
 
-enum action {
+enum Action {
 	set,
 	show,
 	del,
@@ -13,6 +13,11 @@ enum action {
 	unknown
 };
 
+/*
+* Check if command exists 
+* @param arg possible command
+* @return the arg if exists or not
+*/
 std::optional<std::string> existCmd(std::string arg) {
 
 	const char* commands[7] = { "set", "del", "show", "--help", "-h", "run", "help"};
@@ -26,94 +31,46 @@ std::optional<std::string> existCmd(std::string arg) {
 	return std::nullopt; 
 }
 
-action getAction(std::string cmd) {
+/*
+* Get the action of a command
+* @param cmd command string
+* @return the action
+*/
+Action getAction(std::string cmd) {
 
 	if (cmd == "set") {
-		return action::set;
+		return Action::set;
 	}
 
   if (cmd == "show") {
-		return action::show;
+		return Action::show;
 	}
 
   if (cmd == "del") {
-		return action::del;
+		return Action::del;
 	}
 
 	if (cmd == "--help" || cmd == "-h") {
-		return action::help;
+		return Action::help;
 	}
 
 	if (cmd == "help") {
-		return action::help_cmd;
+		return Action::help_cmd;
 	}
 
 	if (cmd == "run") {
-		return action::run;
+		return Action::run;
 	}
 
 
-	return action::unknown;
+	return Action::unknown;
 
 }
 
-int setCommand(int args_number, char *arg[]) {
 
-	if (args_number == 4) {
-		std::string key = arg[2];
-		std::string value = arg[3];
-
-		setKey(key, value);
-	}
-
-	return 0;
-}
-
-int delCommand(int argc, char *argv[]) {
-
-	if (argc >= 2) {
-		std::string key = argv[2];
-
-		deleteKey(key);
-	}
-
-	return 0;
-}
-
-int show_help() {
-	
-
-	std::cout << "CLI assistant for manage tasks and scripts by Jona 🍪" << "\n";
-	std::cout << "\n";
-	std::cout << "Usage: rob [COMMAND] [ARGS]" << "\n\n";
-	std::cout << "Commands:\n";
-	std::cout << "  set  <key> <value>" << " Set a task value" << "\n";
-	std::cout << "  run  [name]" << "        Run a script of folder ~/.config/scripts" << "\n";
-	std::cout << "  show"      << "\t\t     Show list of tasks" <<  "\n";
-	std::cout << "  del  <key>"   << "\t     Delete a task" << "\n";
-	std::cout << "  --help -h "   << "\t     Show help of rob" << "\n";
-	return 0;
-}
-
-int runCommand(int argc, char *argv[]) {
-	
-	if (argc >= 3) {
-		std::string script = argv[2];
-
-		auto file = getFilePath(script);
-
-		if (file) {
-			runFile(file.value());
-		}
-
-	}
-
-
-	return 0;
-}
 
 int getHelpMessage(std::string_view command) {
-	
+
 	if (command == "set") {
 		std::cout << getColor(color::underline) << "Set" <<  getColor(color::reset) << " command" << "\n";
 		std::cout << "\tSet a task" << "\n";
@@ -124,7 +81,7 @@ int getHelpMessage(std::string_view command) {
 		return 0;
 	}
 
-  if (command == "del") {
+	if (command == "del") {
 		std::cout << getColor(color::underline) << "Del" <<  getColor(color::reset) << " command" << "\n";
 		std::cout << "\tDelete a task" << "\n";
 		std::cout << getColor(color::blue) <<"Usage:" << getColor(color::reset) << "\n";
@@ -135,7 +92,7 @@ int getHelpMessage(std::string_view command) {
 	}
 
 	if (command == "run") {
-		std::cout << getColor(color::underline) << "Run" <<  getColor(color::reset) << "command" << "\n";
+		std::cout << getColor(color::underline) << "Run" <<  getColor(color::reset) << " command" << "\n";
 		std::cout << "\tRun a custom script" << "\n";
 		std::cout << getColor(color::blue) <<"Usage:" << getColor(color::reset) << "\n";
 		std::cout << "\trun [name]" << "\n";
@@ -168,35 +125,83 @@ int showCmdHelp(int num, char *args[]) {
 	return 0;
 }
 
+int setCommand(int args_number, char *arg[]) {
+
+	if (args_number >= 4) {
+		std::string key = arg[2];
+		std::string value = arg[3];
+
+		setKey(key, value);
+	} else {
+		std::cout << "key and value not provided" << std::endl;
+		getHelpMessage("set");
+	}
+
+	return 0;
+}
+
+int delCommand(int argc, char *argv[]) {
+
+	if (argc >= 3) {
+		std::string key = argv[2];
+
+		deleteKey(key);
+	} else {
+		std::cout << "No key provided" << "\n";
+		getHelpMessage("del");
+	}
+
+	return 0;
+}
+
+int runCommand(int argc, char *argv[]) {
+	
+	if (argc >= 3) {
+		std::string script = argv[2];
+
+		auto file = getFilePath(script);
+
+		if (file) {
+			runFile(file.value());
+		}
+
+	} else {
+		std::cout << "No script provided" << "\n";
+		getHelpMessage("run");
+	}
+
+
+	return 0;
+}
 /*
 * Call functions to manage commands actions
 * @param act Action to do
 * @param argc Number of arguments
 * @param arg Arguments
 */
-int manageAction(action act, int argc, char *arg[]) {
+int manageAction(Action act, int argc, char *arg[]) {
 	
 	switch(act) {
 
-		case action::help:
+		case Action::help:
 			show_help();
 			break;
-		case action::set:
+		case Action::set:
 			setCommand(argc, arg);
 			break;
-		case action::show: 
+		case Action::show: 
 			showValues();
 			break;
-		case action::del:
+		case Action::del:
 			delCommand(argc, arg);
 			break;
-		case action::run:
+		case Action::run:
 			runCommand(argc, arg);
 			break;
-		case action::help_cmd:
+		case Action::help_cmd:
 			showCmdHelp(argc, arg);
 			break;
-		case action::unknown:
+		case Action::unknown:
 			std::cout << "Unknown action" << "\n";
 			break;
 	}
@@ -213,7 +218,7 @@ int parseArgs(int num, char *args[]) {
 	for(int i = 1; i < num; i++) {
 		auto cmd = existCmd(args[i]);
 		if (cmd) {
-			action act = getAction(cmd.value());
+			Action act = getAction(cmd.value());
 
 			manageAction(act, num, args);
 			return 0;

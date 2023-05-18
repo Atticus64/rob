@@ -5,7 +5,6 @@
 #include <map>
 
 typedef std::map<std::string, std::string> csv; 
-
 class FileGuard {
 	public:
 		FileGuard(const std::string_view path);
@@ -25,6 +24,5 @@ std::optional<std::string> readToString(std::string filename);
 
 
 csv parseCsv(std::string path); 
-
 
 int saveCsv(std::string path, csv data);
