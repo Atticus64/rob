@@ -49,7 +49,7 @@ class FileGuard {
 };
 
 
-std::optional<std::string> read_to_string(std::string filename) {
+std::optional<std::string> readToString(std::string filename) {
   FileGuard file(filename.data());
 
   if (!file.data()) {
@@ -60,7 +60,7 @@ std::optional<std::string> read_to_string(std::string filename) {
 }
 
 
-csv parse_csv(std::string path) {
+csv parseCsv(std::string path) {
 	FileGuard file(path.data());
 
   if (!file.data()) {
@@ -84,7 +84,7 @@ csv parse_csv(std::string path) {
 	return data;
 }
 
-int save_csv(std::string path, csv data) {
+int saveCsv(std::string path, csv data) {
 	std::ofstream info(path);
 
 	for (const auto &[key, value] : data) {

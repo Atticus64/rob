@@ -17,7 +17,7 @@ enum color {
 };
 
 
-std::string get_color(color color) {
+std::string getColor(color color) {
 	switch (color) {
 		case black:
 			return "\033[30m";
@@ -44,7 +44,7 @@ std::string get_color(color color) {
 	return "";
 }
 
-std::string get_tasks_path() {
+std::string getTasksPath() {
 
 	std::string home_dir = getenv("HOME");
 	std::string file_path = home_dir + "/.tasks.csv";
@@ -52,7 +52,7 @@ std::string get_tasks_path() {
 	return file_path;
 }
 
-std::optional<std::string> get_file_path(std::string file) {
+std::optional<std::string> getFilePath(std::string file) {
 	std::string home_dir = getenv("HOME");
 	auto path = home_dir + "/.config/scripts";
 
@@ -68,42 +68,42 @@ std::optional<std::string> get_file_path(std::string file) {
 	return {};
 }
 
-int run_file(std::string path) {
+int runFile(std::string path) {
   system(path.data());
 
 	return 0;
 }
 
-int set_key(std::string key, std::string value) {
+int setKey(std::string key, std::string value) {
 
-	auto filepath = get_tasks_path();
-	csv tasks = parse_csv(filepath);
+	auto filepath = getTasksPath();
+	csv tasks = parseCsv(filepath);
 
 	tasks[key] = value;
 
-	save_csv(filepath, tasks);
+	saveCsv(filepath, tasks);
 
 	return 0;
 }
 
-int delete_key(const std::string key) {
+int deleteKey(const std::string key) {
 
-	auto filepath = get_tasks_path();
-	csv tasks = parse_csv(filepath);
+	auto filepath = getTasksPath();
+	csv tasks = parseCsv(filepath);
 
 	tasks.erase(key);
 
-	save_csv(filepath, tasks);
+	saveCsv(filepath, tasks);
 
 	return 0;
 }
 
-int show_values() {
+int showValues() {
 
-	auto filepath = get_tasks_path();
-	csv tasks = parse_csv(filepath);
+	auto filepath = getTasksPath();
+	csv tasks = parseCsv(filepath);
 
-	std::cout << get_color(color::blue) << "Key" << "\t" << get_color(color::cyan) << "Value " << get_color(color::reset) << "\n";
+	std::cout << getColor(color::blue) << "Key" << "\t" << getColor(color::cyan) << "Value " << getColor(color::reset) << "\n";
 
 
 	for (auto task : tasks) {

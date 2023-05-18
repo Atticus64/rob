@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]) {
 
-	parse_args(argc, argv);
+	parseArgs(argc, argv);
 
 	return 0;
 }

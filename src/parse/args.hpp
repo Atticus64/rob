@@ -13,7 +13,9 @@ std::optional<std::string> existCmd(std::string arg);
 
 action getAction(std::string cmd);
 
-int manage_action(action act);
+int manageAction(action act, int argc, char *arg[]);
 
-int parse_args(int num, char *args[]);
+int runCommand(int argc, char *argv[]);
+
+int parseArgs(int num, char *args[]);
 

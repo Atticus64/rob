@@ -63,7 +63,7 @@ int setCommand(int args_number, char *arg[]) {
 		std::string key = arg[2];
 		std::string value = arg[3];
 
-		set_key(key, value);
+		setKey(key, value);
 	}
 
 	return 0;
@@ -74,7 +74,7 @@ int delCommand(int argc, char *argv[]) {
 	if (argc >= 2) {
 		std::string key = argv[2];
 
-		delete_key(key);
+		deleteKey(key);
 	}
 
 	return 0;
@@ -95,15 +95,15 @@ int show_help() {
 	return 0;
 }
 
-int run_command(int argc, char *argv[]) {
+int runCommand(int argc, char *argv[]) {
 	
 	if (argc >= 3) {
 		std::string script = argv[2];
 
-		auto file = get_file_path(script);
+		auto file = getFilePath(script);
 
 		if (file) {
-			run_file(file.value());
+			runFile(file.value());
 		}
 
 	}
@@ -115,33 +115,33 @@ int run_command(int argc, char *argv[]) {
 int getHelpMessage(std::string_view command) {
 	
 	if (command == "set") {
-		std::cout << get_color(color::underline) << "Set" <<  get_color(color::reset) << " command" << "\n";
+		std::cout << getColor(color::underline) << "Set" <<  getColor(color::reset) << " command" << "\n";
 		std::cout << "\tSet a task" << "\n";
-		std::cout << get_color(color::blue) <<"Usage:" << get_color(color::reset) << "\n";
+		std::cout << getColor(color::blue) <<"Usage:" << getColor(color::reset) << "\n";
 		std::cout << "\tset [key] [value]" << "\n";
-		std::cout << get_color(color::yellow) << "Example:" << get_color(color::reset) << "\n";
+		std::cout << getColor(color::yellow) << "Example:" << getColor(color::reset) << "\n";
 		std::cout << "\tset ticket 'Resolve bug in module actions'" << "\n";
 		return 0;
 	}
 
   if (command == "del") {
-		std::cout << get_color(color::underline) << "Del" <<  get_color(color::reset) << " command" << "\n";
+		std::cout << getColor(color::underline) << "Del" <<  getColor(color::reset) << " command" << "\n";
 		std::cout << "\tDelete a task" << "\n";
-		std::cout << get_color(color::blue) <<"Usage:" << get_color(color::reset) << "\n";
+		std::cout << getColor(color::blue) <<"Usage:" << getColor(color::reset) << "\n";
 		std::cout << "\tdel [key]" << "\n";
-		std::cout << get_color(color::yellow) << "Example:" << get_color(color::reset) << "\n";
+		std::cout << getColor(color::yellow) << "Example:" << getColor(color::reset) << "\n";
 		std::cout << "\tdel ticket" << "\n";
 		return 0;
 	}
 
 	if (command == "run") {
-		std::cout << get_color(color::underline) << "Run" <<  get_color(color::reset) << "command" << "\n";
+		std::cout << getColor(color::underline) << "Run" <<  getColor(color::reset) << "command" << "\n";
 		std::cout << "\tRun a custom script" << "\n";
-		std::cout << get_color(color::blue) <<"Usage:" << get_color(color::reset) << "\n";
+		std::cout << getColor(color::blue) <<"Usage:" << getColor(color::reset) << "\n";
 		std::cout << "\trun [name]" << "\n";
-		std::cout << get_color(color::yellow) << "Example:" << get_color(color::reset) << "\n";
+		std::cout << getColor(color::yellow) << "Example:" << getColor(color::reset) << "\n";
 		std::cout << "\trun update" << "\n";
-		std::cout << get_color(color::cyan)  << "Note:" << get_color(color::reset) << " in your folder ~/.config/scripts" << "\n";
+		std::cout << getColor(color::cyan)  << "Note:" << getColor(color::reset) << " in your folder ~/.config/scripts" << "\n";
 		std::cout << "Must have a file with execution permission"<< "\n";
 		std::cout << "The name is without extension, if file is update.sh the name is update"<< "\n";
 		return 0;
@@ -168,7 +168,13 @@ int showCmdHelp(int num, char *args[]) {
 	return 0;
 }
 
-int manage_action(action act, int argc, char *arg[]) {
+/*
+* Call functions to manage commands actions
+* @param act Action to do
+* @param argc Number of arguments
+* @param arg Arguments
+*/
+int manageAction(action act, int argc, char *arg[]) {
 	
 	switch(act) {
 
@@ -179,13 +185,13 @@ int manage_action(action act, int argc, char *arg[]) {
 			setCommand(argc, arg);
 			break;
 		case action::show: 
-			show_values();
+			showValues();
 			break;
 		case action::del:
 			delCommand(argc, arg);
 			break;
 		case action::run:
-			run_command(argc, arg);
+			runCommand(argc, arg);
 			break;
 		case action::help_cmd:
 			showCmdHelp(argc, arg);
@@ -198,14 +204,18 @@ int manage_action(action act, int argc, char *arg[]) {
 	return 0;
 }
 
-int parse_args(int num, char *args[]) {
+/*
+* Parse arguments of cli and call to manager of commands
+* if command was not found should return help cli
+*/
+int parseArgs(int num, char *args[]) {
 
 	for(int i = 1; i < num; i++) {
 		auto cmd = existCmd(args[i]);
 		if (cmd) {
 			action act = getAction(cmd.value());
 
-			manage_action(act, num, args);
+			manageAction(act, num, args);
 			return 0;
 		}
 		show_help();
