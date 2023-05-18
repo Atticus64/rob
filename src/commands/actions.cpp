@@ -1,7 +1,5 @@
-#include <iostream>
-#include <stdlib.h>
-#include <filesystem>
-#include "../file.hpp"
+#include "../file/file.hpp"
+#include "../file/csv.hpp"
 
 enum color {
 	black,

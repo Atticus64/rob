@@ -1,19 +1,18 @@
-#include <iostream>
-#include <bits/stdc++.h>
-#include <optional>
-#include <fstream>
 #include <map>
+#include <iostream>
+#include <fstream>
+#include <optional>
 
 typedef std::map<std::string, std::string> csv; 
 class FileGuard {
 	public:
 		FileGuard(const std::string_view path);
 
-		~FileGuard() { my_file.close(); }
-
-		std::ifstream data() noexcept; 
+		std::ifstream& data() noexcept; 
 
 		std::string read_file() noexcept;
+
+		~FileGuard() { my_file.close(); }
 
 	private:
 		std::ifstream my_file;
@@ -23,6 +22,3 @@ class FileGuard {
 std::optional<std::string> readToString(const std::string& filename); 
 
 
-csv parseCsv(const std::string& path); 
-
-int saveCsv(const std::string& path, csv data);

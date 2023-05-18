@@ -5,7 +5,8 @@ S=./src
 O=./obj
 
 OBJ= 	$(O)/main.o		\
-		$(O)/file.o		\
+		$(O)/file/file.o		\
+		$(O)/file/csv.o		\
 		$(O)/parse/args.o		\
 		$(O)/commands/actions.o		\
 

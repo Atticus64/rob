@@ -1,17 +1,5 @@
-#include <iostream>
 #include "../commands/actions.hpp"
-#include <optional>
-#include <vector>
-
-enum Action {
-	set,
-	show,
-	del,
-	help,
-	run,
-	help_cmd,
-	unknown
-};
+#include "args.hpp"
 
 /*
 * Check if command exists 

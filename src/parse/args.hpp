@@ -6,7 +6,10 @@ enum Action {
 	set,
 	show,
 	del,
-	help
+	help,
+	run,
+	unknown,
+	help_cmd
 };
 
 std::optional<std::string> existCmd(const std::string& arg);
