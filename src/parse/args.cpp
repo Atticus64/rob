@@ -1,4 +1,3 @@
-#include "../commands/actions.hpp"
 #include "args.hpp"
 
 /*
@@ -97,10 +96,10 @@ int getHelpMessage(std::string_view command) {
 	return 0;
 }
 
-int showCmdHelp(int num, char *args[]) {
+int showCmdHelp(int argc, char *argv[]) {
 
-	if (num >= 3) {
-		std::string cmd = args[2];
+	if (argc >= 3) {
+		std::string cmd = argv[2];
 
 		if (existCmd(cmd)) {
 			getHelpMessage(cmd);
@@ -113,11 +112,11 @@ int showCmdHelp(int num, char *args[]) {
 	return 0;
 }
 
-int setCommand(int args_number, char *arg[]) {
+int setCommand(int argc, char *argv[]) {
 
-	if (args_number >= 4) {
-		std::string key = arg[2];
-		std::string value = arg[3];
+	if (argc >= 4) {
+		std::string key = argv[2];
+		std::string value = argv[3];
 
 		setKey(key, value);
 	} else {
@@ -167,7 +166,7 @@ int runCommand(int argc, char *argv[]) {
 * @param argc Number of arguments
 * @param arg Arguments
 */
-int manageAction(Action act, int argc, char *arg[]) {
+int manageAction(Action act, int argc, char *argv[]) {
 	
 	switch(act) {
 
@@ -175,19 +174,19 @@ int manageAction(Action act, int argc, char *arg[]) {
 			showHelp();
 			break;
 		case Action::set:
-			setCommand(argc, arg);
+			setCommand(argc, argv);
 			break;
 		case Action::show: 
 			showValues();
 			break;
 		case Action::del:
-			delCommand(argc, arg);
+			delCommand(argc, argv);
 			break;
 		case Action::run:
-			runCommand(argc, arg);
+			runCommand(argc, argv);
 			break;
 		case Action::help_cmd:
-			showCmdHelp(argc, arg);
+			showCmdHelp(argc, argv);
 			break;
 		case Action::unknown:
 			std::cout << "Unknown action" << "\n";
@@ -213,19 +212,19 @@ int showAscii() {
 * Parse arguments of cli and call to manager of commands
 * if command was not found should return help cli
 */
-int parseArgs(int num, char *args[]) {
+int parseArgs(int argc, char *argv[]) {
 
-	if (num == 1) {
+	if (argc == 1) {
 		showHelp();
 	}
 
 
-	for(int i = 1; i < num; i++) {
-		auto cmd = existCmd(args[i]);
+	for(int i = 1; i < argc; i++) {
+		auto cmd = existCmd(argv[i]);
 		if (cmd) {
 			Action act = getAction(cmd.value());
 
-			manageAction(act, num, args);
+			manageAction(act, argc, argv);
 			return 0;
 		}
 		showAscii();

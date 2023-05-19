@@ -1,19 +1,4 @@
-#include "../file/file.hpp"
-#include "../file/csv.hpp"
-
-enum color {
-	black,
-	red,
-	green,
-	yellow,
-	blue,
-	magenta,
-	cyan,
-	white,
-	reset,
-	underline
-};
-
+#include "actions.hpp"
 
 std::string getColor(color color) {
 	switch (color) {

@@ -1,9 +1,9 @@
+#pragma once
+
 #include <iostream>
 #include <optional>
-
-int setKey(const std::string& key, const std::string& value);
-
-int deleteKey(const std::string& key);
+#include "../file/file.hpp"
+#include "../file/csv.hpp"
 
 enum color {
 	black,
@@ -18,16 +18,21 @@ enum color {
 	underline,
 };
 
-std::string getColor(color color);
+int setKey(const std::string& key, const std::string& value);
+
+int deleteKey(const std::string& key);
+
 
 int showHelp(); 
 
 int showValues();
 
+int runFile(const std::string& path); 
+
+std::string getColor(color color);
+
 std::string getTasksPath(); 
 
 std::optional<std::string> getFilePath(const std::string& file); 
-
-int runFile(const std::string& path); 
 
 

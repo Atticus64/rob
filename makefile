@@ -1,19 +1,25 @@
 OUT=rob
 CC=g++
 
+# make rebind
+MAKE=make -sC
+
 S=./src
-O=./obj
+O=./obj/*
 
-OBJ= 	$(O)/main.o		\
-		$(O)/file/file.o		\
-		$(O)/file/csv.o		\
-		$(O)/parse/args.o		\
-		$(O)/commands/actions.o		\
+MOD=	              \
+					  $(S)/		  \
+					  $(S)/commands \
+					  $(S)/file 	  \
+					  $(S)/parse    \
 
+$(OUT): $(MOD) 
+	$(CC) $(O) -o $@ 
+	@echo rob is up to date!
 
-$(OUT): $(OBJ) 
-	$(CC) $(OBJ) -o $@
+.PHONY: MODULES $(MOD)
 
+MODULES: $(MOD)
 
-$(O)/%.o: $(S)/%.cpp 
-	$(CC) $< -c -o $@
+$(MOD):
+	$(MAKE) $@
